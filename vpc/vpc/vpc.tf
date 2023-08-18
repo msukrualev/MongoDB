@@ -1,14 +1,14 @@
 resource "aws_vpc" "eos_vpc" {
-cidr_block = var.vpcid
+  cidr_block = var.vpcid
 
-tags = {
+  tags = {
     Name = "eos_database_vpc"
   }
 
 }
 
 resource "aws_internet_gateway" "eos_gw" {
-    vpc_id = aws_vpc.eos_vpc.id
+  vpc_id = aws_vpc.eos_vpc.id
 
 }
 

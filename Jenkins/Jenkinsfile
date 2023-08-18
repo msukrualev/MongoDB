@@ -1,6 +1,6 @@
 pipeline {
   agent any
-     parameters {
+    parameters {
         choice(name: 'ENVIRONMENT', choices: ['dev','qa','perf','prod'], description: 'Select the Environment?')
         choice(name: 'ACTION', choices: ['create','destroy'], description: 'Select the ACTION?')
         }
@@ -8,7 +8,6 @@ pipeline {
         GIT_SSH_COMMAND = "ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
       }
     stages {
-
       stage ('Checkout SCM'){
         steps {
           checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'git', url: 'https://dptrealtime@bitbucket.org/dptrealtime/3tier-terraform-deployment.git']]])
@@ -26,6 +25,7 @@ pipeline {
            sh 'git version'
          }
      }
+
     stage('Download Terragrunt') {
        steps {
          dir ("${ENVIRONMENT}") {
@@ -53,7 +53,7 @@ pipeline {
             }
         }
       }
-stage('Terragrunt Destroy Plan') {
+  stage('Terragrunt Destroy Plan') {
     when {
       expression { params.ACTION == 'destroy' }
     }
@@ -69,7 +69,7 @@ stage('Terragrunt Destroy Plan') {
         }
       }
 
-stage('Terragrunt Apply') { 
+  stage('Terragrunt Apply') { 
        steps {
            dir (params.ENVIRONMENT) {
             
